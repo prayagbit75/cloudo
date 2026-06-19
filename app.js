@@ -51,7 +51,7 @@ async function main() {
 }
 
 app.get("/", (req, res) => {
-    res.send('request is coming');
+     res.redirect('/api/listings')
 });
 
 
