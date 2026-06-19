@@ -1,0 +1,32 @@
+<% layout('/layouts/boilerplate') %>
+<link rel="stylesheet" href="/css/style.css">
+
+<body >
+     <!-- <h1>All Listings</h1> -->
+       
+
+      <div class="cardbox">
+    <%   for(list of lists){%>
+        <a href="/api/listings/<%= list._id %>"  style=" text-decoration: none;" class="singlecard">
+
+<div class="listing-card">
+    <img src="<%=list.image.url%>" alt="listing-image">
+
+    <div class="card-info">
+        <h5><%= list.title %></h5>
+
+        <p>
+<span class="card-price">
+    ₹<%= list.price.toLocaleString("en-IN") %>
+</span>            for 1 night
+            <!-- <span class="rating">★ 5.0</span> -->
+        </p>
+    </div>
+
+</div>
+     </a> 
+                
+    <%   }%>
+    </div>
+</body>
+

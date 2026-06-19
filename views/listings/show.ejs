@@ -1,0 +1,164 @@
+<% layout('/layouts/boilerplate') %>
+
+<div class="listing-details">
+
+    <h1><%= list.title %></h1>
+
+    <img src="<%= list.image.url %>" alt="<%= list.title %>" class="listing-image">
+      <p class="owner-info"> <b> owned by </b> : <%= list.owner.username %> </p>
+    <div class="listing-info">
+
+        <p class="price">
+            <%= new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR'
+            }).format(list.price) %>
+            / night
+        </p>
+
+        <p class="description">
+            <%= list.Discription %>
+        </p>
+
+        <p><strong>Location:</strong> <%= list.location %></p>
+
+        <p><strong>Country:</strong> <%= list.Country %></p>
+
+        <div class="btn-group">
+<% if(list && islogin && list.owner._id.toString() === islogin._id.toString()){ %>
+    <a href="/api/listings/<%= list.id %>/edit">
+        <button class="edit-btn">Edit</button>
+    </a>
+
+
+            <form action="/api/listings/<%= list.id %>/Delete?_method=DELETE" method="POST">
+                <button class="delete-btn">Delete</button>
+            </form>
+
+
+<% } %>
+
+
+
+        </div>
+
+    </div>
+
+<%if(islogin){%>
+
+<form class="review-form" action="/api/listings/<%=list._id%>/reviews" method="POST">
+    
+    <h3>Leave a Review</h3>
+
+    <div class="rating">
+    <input type="radio" name="rating" value="5" id="star5" >
+    <label for="star5">★</label>
+
+    <input type="radio" name="rating" value="4" id="star4">
+    <label for="star4">★</label>
+
+    <input type="radio" name="rating" value="3" id="star3">
+    <label for="star3">★</label>
+
+    <input type="radio" name="rating" value="2" id="star2">
+    <label for="star2">★</label>
+
+    <input type="radio" name="rating" value="1" id="star1" required>
+    <label for="star1">★</label>
+</div>
+
+    <div class="form-group">
+        <label for="comment">Your Review</label>
+        <textarea
+            id="comment"
+            name="comment"
+            rows="5"
+            placeholder="Share your experience..."
+            required
+        ></textarea>
+    </div>
+
+    <button type="submit" class="btn-submit">
+        Submit Review
+    </button>
+%>
+</form>
+<%}%>
+<div class="reviews-section">
+
+    <% if (list.reviews && list.reviews.length > 0) { %>
+        <h3 class="review-heading">Guest Reviews</h3>
+
+        <div class="reviews-grid">
+
+            <% for(let review of list.reviews){ %>
+
+                <div class="review-card">
+
+                    <div class="review-meta">
+                        <h5><%= review.owner.username %></h5>
+                        <span class="stars">
+                            <%= "★".repeat(review.rating) %>
+                        </span>
+
+                        <span class="review-date">
+                            <%= new Date(review.createAt).toLocaleDateString('en-US',{
+                                day:'numeric',  
+                                month:'long',
+                                year:'numeric'
+                            }) %>
+                        </span>
+                    </div>
+
+                    <p class="review-comment">
+                        <%= review.comment %>
+                    </p>
+
+                <% if(review && islogin && review.owner._id.toString()===islogin._id.toString() ){%>             
+                    <form action="/api/listings/<%=list._id%>/reviews/<%=review._id %>?_method=delete" method="post" review-delete>   
+                         <button class="delete-review-btn">Delete</button>                                                                    
+                    </form>
+                <%}%>
+
+
+                </div>
+
+            <% } %>
+
+        </div>
+    <% } %>
+
+</div>
+
+<br>
+<br>
+<hr>
+
+<div id="map" style="height:400px;"></div>
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="../../public/js/script.js"></script>
+<script>
+    const lat = <%= list.geometry.coordinates[1] %>;
+    const lng = <%= list.geometry.coordinates[0] %>;
+
+    const map = L.map('map').setView([lat, lng], 13);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19
+    }).addTo(map);
+
+    const redIcon = L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34]
+    });
+
+    L.marker([lat, lng], { icon: redIcon })
+        .addTo(map)
+        .bindPopup("<b><%= list.title %></b>")
+        .openPopup();
+</script>

@@ -1,0 +1,61 @@
+<% layout('/layouts/boilerplate') %>
+<body>
+   <form action="/api/listings/add" method="post" class="listing-form" enctype="multipart/form-data">
+
+    <h2>Add New Listing</h2>
+
+         <label for="title">Title </label>
+    <input
+    id="title"
+        type="text"
+        name="title"
+        placeholder="Title"
+        required
+    >
+      <label for="Discription">Discription </label>
+
+    <textarea
+    id="Discription"
+        name="Discription"
+        placeholder="Description"
+        rows="5"
+        required
+    ></textarea>
+
+
+    <label for="image">image</label>
+    <input
+    id="image"
+        type="file"
+        name="image"
+        required
+        placeholder="Upload Listing Image"
+    >
+  <label for="price">price</label>
+    <input
+    id="price"
+        type="number"
+        name="price"
+        placeholder="Price in INR"
+        required
+    >
+   <label for="location">location</label>
+    <input
+    id="location"
+        type="text"
+        name="location"
+        placeholder="Location"
+        required
+    >
+  <label for="Country">Country</label>
+    <input
+    id="Country"
+        type="text"
+        name="Country"
+        placeholder="Country"
+        required
+    >
+    <button type="submit">Add Listing</button>
+
+</form>
+</body>

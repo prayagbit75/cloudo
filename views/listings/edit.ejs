@@ -1,0 +1,75 @@
+
+<% layout('/layouts/boilerplate.ejs') %>
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<body>
+<% layout('/layouts/boilerplate.ejs') %>
+
+<form
+    action="/api/listings/<%= list.id %>/update?_method=PATCH"
+    method="POST"
+    enctype="multipart/form-data"
+    class="listing-form"
+>
+    <h2>Update Listing</h2>
+      <label for="title">Title </label>
+    <input
+    id="title"
+        type="text"
+        name="title"
+        placeholder="Title"
+        value="<%= list.title %>"
+        required
+    >
+      <label for="Discription">Discription </label>
+
+    <textarea
+    id="Discription"
+        name="Discription"
+        placeholder="Description"
+        rows="5"
+        required
+    ><%= list.Discription %></textarea>
+     <p>Listing image</p>
+    <img src="<%=orignalurl%>" alt="listing image">
+    <label for="image">image</label>
+    <input
+    id="image"
+        type="file"
+        name="image"
+        placeholder="Image URL"
+        value="<%= list.image.url%>"
+    >
+  <label for="price">price</label>
+    <input
+    id="price"
+        type="number"
+        name="price"
+        placeholder="Price in INR"
+        value="<%= list.price %>"
+        required
+    >
+   <label for="location">location</label>
+    <input
+    id="location"
+        type="text"
+        name="location"
+        placeholder="Location"
+        value="<%= list.location %>"
+        required
+    >
+  <label for="Country">Country</label>
+    <input
+    id="Country"
+        type="text"
+        name="Country"
+        placeholder="Country"
+        required
+        value="<%= list.Country %>"
+    >
+
+    <button type="submit">Update Listing</button>
+</form>
+</body>
